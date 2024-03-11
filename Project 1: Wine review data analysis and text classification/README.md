@@ -1,6 +1,8 @@
-## Wine-review-data-visualization-and-analysis
+# Wine-review-data-visualization-and-analysis
 This is an exploritory project working with three data sources to complete the tasks related to wine reviews.
 In this report, I will discuss the data acquiring and data wrangling process. I will discuss the nature of the data. Lastly, I will answer eleven research questions based on the dataset and provide insights into the questions. The goal of this project was to understand wine reviews by geolocations, varieties, points, price, and also text analysis of what descriptors are frequently associated with reviews of certain wines.  
+
+## Project Description 
 
 Data source 1: 
 For the final project, I originally decided to analyze the wine reviews from Wine Enthusiast https://www.winemag.com/ratings/. However, since the web scrapping was not successful even with codes I found, I resorted to the dataset that was scrapped in 2017 (available on Kaggle: https://www.kaggle.com/datasets/zynicide/wine-reviews). There were 14 columns in the data and approximately 130K entries of data. The columns included: 
@@ -19,7 +21,7 @@ The first project brought together two distinct sub-projects from IST 652: Scrip
 
 The initial phase of the project was completed through IST652: Scripting for Data Analysis. The sub-project was marked by a strategic compilation of multiple external data sources to augment the primary dataset in Kaggle, which was scrapped from the Wine Enthusiast magazine during 2017-2020, containing 210,000 entries of wine reviews. Using Pandas package, the data was merged with the longitude and latitude dataset of the world geographic locations in Kaggle to visualize data distribution based on the locations. 
 
-# Business questions: 
+## Business questions: 
 
 Question 1: Which countries and provinces had the MOST and LEAST reviews (demographic distributions of wine reviews)?
 
@@ -41,16 +43,20 @@ Question 9: What types of descriptors were frequently associated categories of w
 
 This project enhanced my skills in thorough data exploration and analysis, incorporating traditional correlational analysis to examine the interplay between various attributes. The methodologies applied during this stage leveraged Python's robust libraries, specifically Pandas and NumPy, to facilitate data manipulation and analysis. The focus of the first part of the project was to uncover the relationships among data attributes and to understand the dataset's overall structure. Insights gleaned from this phase were aimed at data visualization and exploratory analysis, offering both graphical and statistical insights into the inherent patterns and trends within the wine review data. Key questions included identifying the top 10 most reviewed wine types and the most frequently reviewed wine regions. The following demonstrated one of such exploratory analysis done using the dataset to gain insights into the wine around the world, including the origins of the wine that were reviewed by the magazine (Figure X). 
 
- 
+<img width="424" alt="image" src="https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/assets/94016314/fbf65bf6-a51b-442e-88e0-4a5a83f18481">
+
 Figure X. Top most reviewed wine origins by countries 
 
 Additionally, the project presented me with an opportunity to explore the relationship between wine prices and their ratings, yielding insights with significant business implications. Specifically, it revealed that wines with high ratings are not necessarily associated with higher prices. To uncover this, a regression analysis was conducted using the sklearn library, examining the correlation between wine prices and the points awarded. A noteworthy hurdle of this analysis was the creation of visualizations to convey meaningful insights effectively. This was particularly important given the data's characteristics: a narrow points range (80 - 100) contrasted with a vast, densely populated price range, mostly concentrated within the lower consumer price quartile. Consequently, the correlation model was refined to consider only wines priced at $100 or less, enabling a clearer comprehension of the relationship between price and quality.
-     
+
+<img width="201" alt="image" src="https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/assets/94016314/10dcdc0d-ee3c-42ab-8f17-c4e5a47e279f">
+<img width="198" alt="image" src="https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/assets/94016314/e0d20be2-41c7-4afc-a7ff-035464bc6102">
+
 Like any research projects I have conducted, this project had its constraints. The initial phase did not fully leverage the textual data present in the primary dataset. Acknowledging this limitation, I strategized to explore this rich textual content in the subsequent stage of my research, aiming to harness the full potential of the available data.
 
 The second segment of the project, executed as part of IST 644: Natural Language Processing, built upon the foundational work of IST 652: Scripting for Data Analysis. In this phase, I capitalized on the textual data embedded within the wine reviews. The aim was to harness linguistic features from these reviews to predict outcomes such as high vs. low ratings, price brackets, and wine varietals. Collaborating with Nicholas Nguyen, we delved into natural language processing techniques. Our toolkit included tokenization and POS tagging via the NLTK library, extracting features using the bag-of-words model and bigrams, and implementing vectorization through TF-IDF scores. To bring the data to life, we created visual word clouds. Finally, we tackled text classification with the Multinomial Naïve Bayes algorithm, navigating through the rich textual landscape to draw predictive insights.
 
-# Reflection and Learning Goals 
+## Reflection and Learning Goals 
 
 The wine review project stands out as an important experience in my educational journey, marking my initial attempt into the data scientist path. This project was also crucial for my first programming experience, where I developed foundational data science skills from the ground up, with a particular focus on Natural Language Processing—a key aspect of my professional trajectory.
 
