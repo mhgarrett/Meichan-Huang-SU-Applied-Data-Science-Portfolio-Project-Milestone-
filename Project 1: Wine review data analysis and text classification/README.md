@@ -1,4 +1,4 @@
-# Wine-review-data-visualization-and-analysis
+## Wine-review-data-visualization-and-analysis
 This is an exploritory project working with three data sources to complete the tasks related to wine reviews.
 In this report, I will discuss the data acquiring and data wrangling process. I will discuss the nature of the data. Lastly, I will answer eleven research questions based on the dataset and provide insights into the questions. The goal of this project was to understand wine reviews by geolocations, varieties, points, price, and also text analysis of what descriptors are frequently associated with reviews of certain wines.  
 
@@ -19,7 +19,7 @@ The first project brought together two distinct sub-projects from IST 652: Scrip
 
 The initial phase of the project was completed through IST652: Scripting for Data Analysis. The sub-project was marked by a strategic compilation of multiple external data sources to augment the primary dataset in Kaggle, which was scrapped from the Wine Enthusiast magazine during 2017-2020, containing 210,000 entries of wine reviews. Using Pandas package, the data was merged with the longitude and latitude dataset of the world geographic locations in Kaggle to visualize data distribution based on the locations. 
 
-Business questions: 
+# Business questions: 
 
 Question 1: Which countries and provinces had the MOST and LEAST reviews (demographic distributions of wine reviews)?
 
@@ -49,8 +49,10 @@ Additionally, the project presented me with an opportunity to explore the relati
 Like any research projects I have conducted, this project had its constraints. The initial phase did not fully leverage the textual data present in the primary dataset. Acknowledging this limitation, I strategized to explore this rich textual content in the subsequent stage of my research, aiming to harness the full potential of the available data.
 
 The second segment of the project, executed as part of IST 644: Natural Language Processing, built upon the foundational work of IST 652: Scripting for Data Analysis. In this phase, I capitalized on the textual data embedded within the wine reviews. The aim was to harness linguistic features from these reviews to predict outcomes such as high vs. low ratings, price brackets, and wine varietals. Collaborating with Nicholas Nguyen, we delved into natural language processing techniques. Our toolkit included tokenization and POS tagging via the NLTK library, extracting features using the bag-of-words model and bigrams, and implementing vectorization through TF-IDF scores. To bring the data to life, we created visual word clouds. Finally, we tackled text classification with the Multinomial Naïve Bayes algorithm, navigating through the rich textual landscape to draw predictive insights.
-Reflection and Learning Goals 
+
+# Reflection and Learning Goals 
+
 The wine review project stands out as an important experience in my educational journey, marking my initial attempt into the data scientist path. This project was also crucial for my first programming experience, where I developed foundational data science skills from the ground up, with a particular focus on Natural Language Processing—a key aspect of my professional trajectory.
 
 One of the most significant lessons from this project, which aligns with the learning goals of the program, was the realization that data analysis and data science projects are inherently cyclical, not linear. This iterative process often involves revisiting and refining each stage to achieve the most insightful results. Through this experience, I learned that each phase of analysis can shed new light and necessitate adjustments in strategy or technique. This project has not only equipped me with technical skills but has also instilled a mindset geared towards persistence and innovation—qualities that are indispensable for any aspiring data scientist.
-![image](https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/assets/94016314/efbc6766-6de8-4494-854e-60b449733e5e)
+
