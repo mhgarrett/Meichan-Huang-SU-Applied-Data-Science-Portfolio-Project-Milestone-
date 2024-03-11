@@ -14,9 +14,6 @@ This portfolio showcases my ability to integrate the diverse knowledge and skill
 Demonstrating mastery in data science requires more than understanding its principles; it demands the creative application of these principles to solve novel problems. In this portfolio, I demonstrate my ability to apply these principles in the following projects: 
 
 
-
-
-
 Term	Course Name	Project	Technical Skills	Tools
 Fall 2022	IST 652: Scripting for Data Analysis & IST 644: Natural Language Processing	Wine review data analysis and  text classification   	Data visualization, Data analysis, Natural Language Processing, Word Clouds, Machine Learning 	MangoDB,
 Pandas, NumPy, geopandas, sklearn, Seaborn, Matplotlib, NLTK, mapclassify
@@ -29,5 +26,4 @@ Neural Network, Image classification	Tensorflow, Kera, sklearn, Pandas, Numpy, a
 Summer 2023	IST 722:Data Warehouse	FudgeWorld  Data Warehouse Management	Database management, Data warehousing (ROLAP/MOLAP), ETL,  Business Intelligence 	SQL Server, SQL, SQL Server Integration Services (SISS), PowerBI
 
 Fall 2023	IST 707: Applied Machine Learning 	Credit Card Fraud Detection 	Data preprocessing, SMOTE, Binary Classification	RStudio
-![image](https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/assets/94016314/30b60878-3e24-49e7-8289-8d6f4a9ee7ce)
-
+![image](https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/assets/94016314/04d6cee1-5a52-4310-83eb-107ad986d05c)
