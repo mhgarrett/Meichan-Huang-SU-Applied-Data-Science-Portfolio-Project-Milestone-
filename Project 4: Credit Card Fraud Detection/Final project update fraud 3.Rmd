@@ -1,0 +1,1078 @@
+---
+title: "Meichan_Huang_IST707_FinalProject_Final"
+author: "Meichan Huang"
+date: "2023-11-12"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+```{r}
+library(tidyverse)
+library(rpart)
+library(ggplot2)
+library(dplyr)
+library(anytime)
+library(SmartEDA) #calculate the descriptive stats
+library(moments) #calculate the skewness
+library(DMwR)
+library(digest) #for hashing the cetegorical variables 
+library(RColorBrewer)
+library(InformationValue) #For word of evidence transformation with cateogorical variables that are highly cardinal 
+library(gridExtra) #side by side graphs 
+library(scales)
+
+#For Algorithms 
+library(rpart)
+library(randomForest)
+library(pROC)
+library(caret)
+library(readr)
+library(tidymodels)
+library(rattle)
+library(Rborist)
+```
+
+```{r}
+fraudtrain_csv = read.csv('/Users/meichanhuang/Dropbox/Dropbox/documents/Data Science School Work/Fall 2023/Final project/fraudtrain.csv')
+fraudtest_csv = read.csv('/Users/meichanhuang/Dropbox/Dropbox/documents/Data Science School Work/Fall 2023/Final project/fraudtest.csv')
+```
+
+
+```{r}
+#save the datasets to a new dataset so that we do not need to load the data everytime the R restarts.
+
+fraudtrain <- fraudtrain_csv
+fraudtest <-fraudtest_csv
+
+```
+
+```{r}
+head(fraudtrain)
+```
+
+
+```{r}
+summary(fraudtrain)
+```
+```{r}
+summary(fraudtest)
+```
+
+```{r}
+str(fraudtrain)
+```
+```{r}
+#check for null values
+
+sum(is.na(fraudtrain))
+sum(is.na(fraudtest))
+
+#No missing data
+```
+
+
+## Data Preprocessing 
+The data preprocessing steps will be discussed in here. From the basic stats description, as there are a heavy skew in the dataset, with non-fraud cases being the majority. 
+
+Also, there are two types of data, one is categorical (city, states, etc) and the other is numeric (amt, trans_time). Before the models can be built, these attributes will need to be converted to numeric. 
+
+
+# 1. Converting data types for exploratory analysis - correlation 
+
+
+(1) Time variable transformation: The first step is to manipulate the time variables, e.g. trans_date and DOB, as these two variables might be useful for discovery 
+
+```{r}
+#Splitting the transaction date and time into two separate columns 
+
+fraudtrain[c("trans_date" , "trans_time")] = str_split_fixed(fraudtrain$trans_date_trans_time, " ", 2)
+
+#Convert data type date
+fraudtrain$trans_date <- anytime(fraudtrain$trans_date)
+fraudtrain$trans_date <- as.Date(fraudtrain$trans_date)
+```
+
+```{r}
+#Extracting the hours from the trans_time column. 
+fraudtrain$trans_hour <- sapply(fraudtrain$trans_time, function(x) {
+    hour_factor <- factor(format(strptime(x, format="%H:%M:%S"), "%H"))
+    return(hour_factor)
+})
+```
+
+```{r}
+#Extract the month, days of a week and weekend from the trans_date
+fraudtrain$month <- format(fraudtrain$trans_date, "%m")       # Extract month
+fraudtrain$weekofday <- format(fraudtrain$trans_date, "%A")    # Extract weekday name
+```
+
+
+
+```{r}
+#Calcaulte the age of the clients 
+#Convert DOB to Age for both train and test datasets 
+
+fraudtrain$dob <- anytime(fraudtrain$dob)
+fraudtrain$dob <- as.Date(fraudtrain$dob)
+
+# Calculate a derived variable-> age
+fraudtrain$age <- year(today()) - year(as.Date(fraudtrain$dob))
+```
+
+
+Conduct the same data transformation for the test dataset 
+
+
+```{r}
+#Splitting the transaction date and time into two separate columns 
+
+fraudtest[c("trans_date" , "trans_time")] = str_split_fixed(fraudtest$trans_date_trans_time, " ", 2)
+
+#Convert data type date
+fraudtest$trans_date <- anytime(fraudtest$trans_date)
+fraudtest$trans_date <- as.Date(fraudtest$trans_date)
+
+```
+
+```{r}
+#Extract the hours from the test data$trans_time and then purge the column
+fraudtest$trans_hour <- sapply(fraudtest$trans_time, function(x) {
+    hour_factor <- factor(format(strptime(x, format="%H:%M:%S"), "%H"))
+    return(hour_factor)
+})
+```
+
+```{r}
+#Extract the month, days of a week and weekend from the trans_date in test data set 
+fraudtest$month <- format(fraudtest$trans_date, "%m")       # Extract month
+fraudtest$weekofday <- format(fraudtest$trans_date, "%A")    # Extract weekday name
+```
+
+```{r}
+#Calculate the age of the clients 
+#Convert DOB to Age for test dataset 
+
+fraudtest$dob <- anytime(fraudtest$dob)
+fraudtest$dob <- as.Date(fraudtest$dob)
+
+# Calculate a derived variable-> age
+fraudtest$age <- year(today()) - year(as.Date(fraudtest$dob))
+```
+
+
+(2) Drop unnecessary columns that are highly cardinal and discretional, e.g. first, last name, jobs (), city (800+ levels), and Merchants() as they are difficult to categorize; Drop ID columns, e.g. transation_number & dob, which has been transformed to age, as it is not useful in the model building anymore; Drop 
+```{r}
+fraudtrain = fraudtrain %>% select(-c(trans_date_trans_time, merchant, street, first, last, trans_time, unix_time, merchant, trans_num, dob, trans_date,cc_num))
+fraudtest = fraudtest %>% select(-c(trans_date_trans_time, merchant, street, first, last, trans_time, unix_time, merchant, trans_num, dob, trans_date, cc_num))
+```
+
+(3) Sometimes, the distance between the customers' long and lat and merchant's long and lat could be potential indication of fraud. Therefore, transformation will be conducted on these columns. 
+
+```{r}
+#Compute the absolute difference between the customer and merchant lat and long
+fraudtrain$lat_diff <- abs(fraudtrain$lat - fraudtrain$merch_lat)
+fraudtrain$long_diff <- abs(fraudtrain$long - fraudtrain$merch_long)
+
+#it is estimated that difference between each degree of longitude and lattitude is 69 miles(approx), therefore, the distance between the merchant and the customer can be calculated: 
+fraudtrain$displacement <- sqrt((fraudtrain$lat_diff * 69)^2 + (fraudtrain$long_diff * 69)^2)
+
+```
+
+```{r}
+#convert the test dataset with the same method: 
+#Compute the absolute difference between the customer and merchant lat and long
+fraudtest$lat_diff <- abs(fraudtest$lat - fraudtest$merch_lat)
+fraudtest$long_diff <- abs(fraudtest$long - fraudtest$merch_long)
+
+#it is estimated that difference between each degree of longitude and lattitude is 69 miles(approx), therefore, the distance between the merchant and the customer can be calculated: 
+fraudtest$displacement <- sqrt((fraudtest$lat_diff * 69)^2 + (fraudtest$long_diff * 69)^2)
+
+```
+
+(4) Convert categorical variables to factors for the data analysis 
+```{r}
+#Convert data type in train set
+# Converting char data types to factors for correlation 
+
+# now we have 16 variables out of which, 10 are categorical. We want these columns to be of type factor instead of character.
+fraudtrain$category <- as.factor(fraudtrain$category)
+fraudtrain$gender <- as.factor(fraudtrain$gender)
+fraudtrain$city <- as.factor(fraudtrain$city)
+fraudtrain$state <- as.factor(fraudtrain$state)
+fraudtrain$job <- as.factor(fraudtrain$job)
+fraudtrain$month <- as.factor(fraudtrain$month)
+fraudtrain$weekofday <-as.factor(fraudtrain$weekofday)
+fraudtrain$trans_hour <-as.factor(fraudtrain$trans_hour)
+fraudtrain$month <-as.factor(fraudtrain$month)
+```
+
+```{r}
+#Convert data type in test set
+fraudtest$category <- as.factor(fraudtest$category)
+fraudtest$gender <- as.factor(fraudtest$gender)
+fraudtest$city <- as.factor(fraudtest$city)
+fraudtest$state <- as.factor(fraudtest$state)
+fraudtest$job <- as.factor(fraudtest$job)
+fraudtest$month <- as.factor(fraudtest$month)
+fraudtest$weekofday <-as.factor(fraudtest$weekofday)
+fraudtest$trans_hour <-as.factor(fraudtest$trans_hour)
+fraudtest$month <-as.factor(fraudtest$month)
+```
+
+
+```{r}
+#Inspect the two dataframes to ensure all the changes are saved. 
+str(fraudtrain)
+```
+
+```{r}
+str(fraudtest)
+```
+
+
+After inspection, the datasets for the model are ready for the EDA analysis. 
+
+## EDA of the train dataset
+```{r}
+# Bar plot for categorical variables like 'category'
+ggplot(fraudtrain, aes(x = category)) + geom_bar() + theme(axis.text.x = element_text(angle = 90, hjust = 1)) 
+```
+
+```{r}
+# Boxplot for amount by fraud status 
+ggplot(fraudtrain, aes(x = as.factor(is_fraud), y = amt)) + geom_boxplot()
+```
+
+the "amt" category has very little spacing between small numbers and large spacing between high numbers. Because of that, the variable "atm" is going under non logarithm scaling to increases the distance between small values and reduces de spacing between large ones.
+
+```{r}
+ggplot(fraudtrain, aes(x = city_pop, y = is_fraud)) +
+  geom_point() +
+  labs(x = "City Population", y = "Fraud Case (0 = No, 1 = Yes)", title = "City Population vs. Fraud Cases") +
+  theme_minimal()
+```
+The plot does not really show anything.
+
+Conduct the transformation non-log also for the test set: 
+
+
+```{r}
+# Comparing categories by fraud using a stacked bar plot
+ggplot(fraudtrain, aes(fill = as.factor(is_fraud), x = category)) + geom_bar(position = "fill") + theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
+```
+This graph is not very helpful in terms of identifying the level of fraud in each category, therefore, another visual was created: 
+
+```{r}
+
+
+a <- fraudtrain %>%
+  filter(is_fraud == 0) %>%
+  count(category) %>%
+  mutate(not_fraud_percentage = n / sum(n)) %>%
+  select(category, not_fraud_percentage)
+
+b <- fraudtrain %>%
+  filter(is_fraud == 1) %>%
+  count(category) %>%
+  mutate(fraud_percentage = n / sum(n)) %>%
+  select(category, fraud_percentage)
+
+ab <- inner_join(a, b, by = "category") %>%
+  mutate(diff = fraud_percentage - not_fraud_percentage)
+
+# Create bar plot
+plot <- ggplot(ab %>% arrange(desc(diff)), aes(x = category, y = diff)) +
+  geom_bar(stat = "identity") +
+  ggtitle("Category vs Percentage transactions") +
+  labs(x = "Transaction Category", y = "Percentage Difference") +
+  theme_minimal() +
+  coord_flip()
+print(plot)
+
+```
+
+
+
+```{r}
+library(maps)
+
+us_map <- map_data("state") 
+
+ggplot() + 
+  geom_polygon(data = us_map, aes(x = long, y = lat, group = group), 
+               fill = "white", color = "black") +
+  geom_point(data = fraudtrain, aes(x = long, y = lat, color = as.factor(is_fraud)), 
+             size = 1, alpha = 0.6)+
+  labs(title = "Credit Card Transactions Overlay on US Map", 
+       x = "Longitude", y = "Latitude") +
+  scale_color_manual(values = c("blue", "red")) +
+  theme_minimal()
+
+```
+```{r}
+ # Summarizing data
+fraud_summary <- fraudtrain %>%
+  group_by(state) %>%
+  summarise(fraud_count = sum(as.numeric(is_fraud) == 1))
+
+ggplot(fraud_summary, aes(x = state, y = fraud_count)) +
+  geom_bar(stat = "identity") +
+  labs(x = "State", y = "Number of Fraud Cases", title = "Fraud Cases by State") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  scale_fill_brewer(palette = "Set1")
+
+```
+This plot is more informative in terms 
+```{r}
+fraud_by_gender = fraudtrain %>%
+  filter(is_fraud == 1) %>%
+  count(gender)
+
+ggplot(fraud_by_gender, aes(x=gender, y=n)) +
+  geom_bar(stat="identity", fill="lightblue") +
+  geom_text(aes(label=n), vjust=-0.3, color="black") +  # Add labels
+  labs(title="Fraud Cases by Gender", x="Gender", y="Number of Fraud Cases")
+
+```
+
+```{r}
+# First, we count the number of fraud cases by gender and category
+fraud_by_gender_category <- aggregate(. ~ gender + category, data=fraudtrain[fraudtrain$is_fraud == 1, ], FUN=length)
+
+# Now create the plot
+ggplot(fraud_by_gender_category, aes(x=category, y=amt, fill=gender)) +
+  geom_bar(stat="identity", position="dodge") +
+  labs(title="Fraud Cases by Gender and Category", x="Category", y="Number of Fraud Cases") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Rotate x-axis labels
+
+```
+```{r}
+#Age and fraud
+plot <- ggplot(fraudtrain, aes(x = age, fill = as.factor(is_fraud))) +
+  geom_density(alpha = 0.5) +
+  labs(x = "Credit Card Holder Age", y = "Density", fill = "Type") +
+  scale_x_continuous(breaks = seq(0, 110, by = 5)) +
+  theme_minimal() +
+  ggtitle("Age Distribution in Fraudulent vs Non-Fraudulent Transactions") +
+  guides(fill = guide_legend(title = "Type"))
+print(plot)
+```
+
+```{r}
+#Gender, age and fraud
+ggplot(fraudtrain, aes(x = gender, y = age, fill = as.factor(is_fraud))) +
+  geom_boxplot() +
+  labs(title = "Age and Gender Distribution by Fraud",
+       x = "Gender",
+       y = "Age",
+       fill = "Is Fraud") +
+  theme_minimal()
+```
+It seems that in general, there is an age difference in people's likelihood to get scammed, that is, people over 50 are a little more likely to susceptable to credit card fraud.  
+
+```{r}
+# Aggregate data
+fraud_count <- table(fraudtrain$is_fraud)
+
+# Convert to data frame for ggplot
+fraud_count_df <- as.data.frame(fraud_count)
+
+# Create the bar plot
+ggplot(fraud_count_df, aes(x=Var1, y=Freq, fill=Var1)) +
+  geom_bar(stat="identity") +
+  labs(title="Comparison of Fraud and Non-Fraud Cases", x="", y="Number of Cases") +
+  scale_fill_manual(values=c("lightblue", "orange")) +
+  theme_minimal()
+```
+```{r}
+# Split the data into two subsets based on 'is_fraud' status
+
+fraudtrain$trans_hour_num <- as.numeric(fraudtrain$trans_hour)
+normal_transactions <- subset(fraudtrain, is_fraud == 0)
+fraud_transactions <- subset(fraudtrain, is_fraud == 1)
+
+# Create a ggplot object for normal transactions
+p1 <- ggplot(normal_transactions, aes(x = trans_hour_num)) +
+      geom_histogram(bins = 24, fill = "skyblue") +
+      ggtitle("Normal Transactions") +
+      xlab("Hour of Day") +
+      ylab("Density") +
+      theme_minimal()
+
+# Create a ggplot object for fraud transactions
+p2 <- ggplot(fraud_transactions, aes(x = trans_hour_num)) +
+      geom_histogram(bins = 24, fill = "blue") +
+      ggtitle("Fraudulent Transactions") +
+      xlab("Hour of Day") +
+      ylab("Density") +
+      theme_minimal()
+
+# Arrange the plots side by side
+
+grid.arrange(p1, p2, nrow = 1)
+```
+```{r}
+#Month 
+ggplot(fraudtrain, aes(x = month, fill = as.factor(is_fraud))) +
+  geom_bar(position = position_dodge()) +
+  labs(title = "Count of Fraud vs. Non-Fraud Transactions by Month",
+       x = "Month",
+       y = "Count") +
+  theme_minimal()
+```
+```{r}
+#Fraud cases distribution by months
+ggplot(fraud_transactions, aes(x = month, fill = as.factor(is_fraud))) +
+  geom_bar(position = position_dodge()) +
+  labs(title = "Count of Fraud vs. Non-Fraud Transactions by Month",
+       x = "Month",
+       y = "Count") +
+  theme_minimal()
+```
+```{r}
+#Weekday
+ggplot(fraudtrain, aes(x = weekofday, fill = as.factor(is_fraud))) +
+  geom_bar(position = position_dodge()) +
+  labs(title = "Count of Fraud vs. Non-Fraud Transactions by Weekday",
+       x = "Weekday",
+       y = "Count") +
+  theme_minimal()
+```
+
+```{r}
+# Fraud cases distribution by weekday
+ggplot(fraud_transactions, aes(x = weekofday, fill = as.factor(is_fraud))) +
+  geom_bar(position = position_dodge()) +
+  labs(title = "Count of Fraud vs. Non-Fraud Transactions by Month",
+       x = "Weekday",
+       y = "Count") +
+  theme_minimal()
+```
+
+```{r}
+#Calculate the % of non-fraud v. fraud 
+ExpCustomStat(fraudtrain, Cvar = c("is_fraud"), gpby = FALSE)
+```
+It looks like the data was highly imbalanced. There are different ways to handle imbalanced data. Therefore, it seems that the data will need some resampling to achieve a more balanced dataset. 
+
+## Data Transformation and Feature Selection 
+
+
+(1) Non-logarithmic transformation for amt 
+
+```{r}
+fraudtrain$amt_log <- log1p(fraudtrain$amt)
+
+fraudtest$amt_log <- log1p(fraudtest$amt)
+# Create a density plot
+ggplot(fraudtrain, aes(x = amt_log)) +
+  geom_density(fill = "blue") +
+  labs(title = "Density Plot of Log Transformed 'amt'",
+       x = "Log Transformed 'amt'",
+       y = "Density")
+```
+
+
+```{r}
+#save the two new data sets as processed csv in case the data is lost. 
+write.csv(fraudtrain, "/Users/meichanhuang/Dropbox/Dropbox/documents/Data Science School Work/Fall 2023/Final project/fraudtrain_cleaned.csv", row.names = FALSE)
+write.csv(fraudtest, "/Users/meichanhuang/Dropbox/Dropbox/documents/Data Science School Work/Fall 2023/Final project/fraudtest_cleaned.csv", row.names = FALSE)
+```
+
+
+
+(2) In this section, categorical variables will be transformed into numeric values. Two methods are used. For highly cardinal categorical variables, e.g. job, city, states, category, the target or (mean) encoding is used. There are some advantages of using target encoding, e.g. 
+
+Since I was having trouble with this step in r, I did the cleaning in python to test and see if the values were right. 
+
+Python code used for the target encoding is similar to this: 
+
+from category_encoders import TargetEncoder
+
+def apply_target(train, columns, target_col):
+    encoder = TargetEncoder()
+
+    for col in columns:
+        X = train[col]
+        y = train[target_col]
+
+        new_col_name = f"{col}_target_sklearn"
+        train[new_col_name] = encoder.fit_transform(X, y)
+
+    return train
+    
+columns_to_encode = ["category", "state", "city", "job", "weekofday"]
+target_column = "is_fraud"
+
+fraudtrain = apply_woe(fraudtrain, columns_to_encode, target_column)
+
+/////////////////////////////////////
+
+R method for target encoding in r used the following codes, but the results for transformation was weird looking, some of which was over 1.0, which is unlikely. Therefore, the attempt failed. 
+
+# Grouped statistics
+stats <- fraudtrain%>%
+  group_by(city) %>%
+  summarise(count = n(), mean = mean(is_fraud, na.rm = TRUE))
+
+# Join back to original dataframe
+fraudtrain1 <- fraudtrain %>%
+  left_join(stats, by = "city") %>%
+  rename(city_encoded_mean = mean)
+
+smoothing_factor <- 1.0
+min_samples_leaf <- 1
+prior <- mean(fraudtrain1$is_fraud, na.rm = TRUE)
+
+# Smoothing calculation
+fraudtrain1 <- fraudtrain1 %>%
+  mutate(smoove = 1 / (1 + exp(-(count - min_samples_leaf) / smoothing_factor)),
+         city_encoded_smoothing = prior * (1 - smoove) + city_encoded_mean * smoove)
+
+# Removing unnecessary columns
+fraudtrain1 <- fraudtrain1 %>%
+  select(-count, -city_encoded_mean, -smoove)
+
+summary(fraudtrain1)
+
+```{r}
+#Read the data that have been transformed 
+train_t <-read.csv("/Users/meichanhuang/Dropbox/Dropbox/documents/Data Science School Work/Fall 2023/Final project/fraudtrain_target_transformed.csv")
+test_t <-read.csv("/Users/meichanhuang/Dropbox/Dropbox/documents/Data Science School Work/Fall 2023/Final project/fraudtest_target_transformed.csv")
+```
+
+```{r}
+head(train_t)
+head(test_t)
+```
+
+(3) Transform gender to binary (0, 1)
+```{r}
+train_t <- train_t %>%
+  mutate(gender_binary = ifelse(gender == "F", 0, 1))
+
+test_t <- test_t %>%
+  mutate(gender_binary = ifelse(gender == "F", 0, 1))
+```
+
+(4) Transform the target variable into factor. 
+
+```{r}
+train_t$is_fraud <-as.factor(train_t$is_fraud)
+test_t$is_fraud<-as.factor(test_t$is_fraud)
+```
+
+```{r}
+head(train_t)
+```
+
+
+(5) Drop the unnecessary columns again, since the data has been cleaned and transformed.
+
+```{r}
+train_t2 <- train_t[, !names(train_t) %in% c("category", "amt", "gender", "city", "state", "zip", "weekofday", "weekend", "job", "lat", "long", "merch_lat", "merch_long", "lat_diff", "long_diff", "trans_hour_num", "X")]
+test_t2 <- test_t[, !names(test_t) %in% c("category", "amt", "gender", "city", "state", "zip", "weekofday", "weekend", "job", "lat", "long", "merch_lat", "merch_long", "lat_diff", "long_diff", "X")]
+```
+
+```{r}
+head(train_t2)
+```
+```{r}
+head(test_t2)
+```
+
+
+```{r}
+write.csv(train_t2, "/Users/meichanhuang/Dropbox/Dropbox/documents/Data Science School Work/Fall 2023/Final project/fraudtrain_final.csv", row.names = FALSE)
+write.csv(test_t2, "/Users/meichanhuang/Dropbox/Dropbox/documents/Data Science School Work/Fall 2023/Final project/fraudtest_final.csv", row.names = FALSE)
+```
+
+
+# Feature selection
+
+1. Examine the correlation between the target variable and the response variables - since the target variable is binominal, the cramers_v is used. The results showed that the displacement 
+
+```{r}
+library(vcd)
+cramers_v_values <- sapply(train_t2[, -2], function(x) {
+  assocstats(table(train_t2$is_fraud, x))$cramer
+})
+
+cramers_v_values
+```
+The correlation matrix does not seem to have a very indication of the relationship between response variables. Here is the results for the cremer's A to understand the association between each variable and the target variable. 
+
+city_pop: 0.2816 - Shows a moderate association with the class variable. This suggests that there is some relationship between city_pop and the class variable, but it's not extremely strong.
+
+trans_hour: 0.1186 - Indicates a weak association with the class variable. The relationship here is relatively small.
+
+month: 0.0190 - Shows a very weak, almost negligible association with the class variable.
+
+age: 0.0481 - Also indicates a weak association with the class variable.
+
+displacement: 1.0000 - This suggests a perfect association with the class variable. However, a value of 1.0 is quite unusual and might indicate either a data issue or that displacement is directly derived from the class variable.
+
+amt_log: 0.7989 - Shows a strong association with the class variable. This implies that amt_log is closely related to the class variable.
+
+category_target_sklearn: 0.0707 - Indicates a weak association with the class variable.
+
+state_target_sklearn: 0.0380 - A very weak association with the class variable.
+
+city_target_sklearn: 0.2843 - Moderate association, similar to city_pop.
+
+job_target_sklearn: 0.1738 - Indicates a weak to moderate association with the class variable.
+
+weekofday_target_sklearn: 0.0120 - Very weak, almost negligible association.
+
+gender_binary: 0.0076 - Very weak, almost negligible association. The results is very similar to the EDA analysis where gender is not a strong indicator of the fraud vs. non-fraud cases. 
+
+
+Also, examine the collinearity between all the numeric data: 
+```{r}
+# Calculate correlation matrix
+corr_matrix <- cor(train_t2[, sapply(train_t2, is.numeric)])
+
+# Plot the heatmap
+heatmap(corr_matrix, main = "Correlation Matrix Heatmap", 
+        Colv = NA, Rowv = NA, scale = "column", 
+        margins = c(5, 10), cexRow = 0.5, cexCol = 0.5)
+```
+It seems that there is not a strong correlation amongst all the numeric variables. 
+---------------------------------
+## Feature selection: 
+Now that the correlation has shown that there are a few variables that are not strongly associated with the target variable, it can be removed, e.g. month, age, category, state, and week of day, and gender. 
+
+Therefore, these variables will be dropped from the features. 
+```{r}
+train_t2 <- train_t2[, !names(train_t2) %in% c("month","age", "state_target_sklearn", "weekofday_target_sklearn", "gender_binary" )]
+test_t2 <- test_t2[, !names(test_t2) %in% c("month","age", "state_target_sklearn", "weekofday_target_sklearn", "gender_binary")]
+```
+
+```{r}
+str(train_t2)
+```
+
+After cleaning, there are 8 response columns and 1 target column. That's very small collection of features and there is no need for PCA. However, as the data used different scales, it would be nice to standardize the data first by transforming the features in both of the datasets so they have a mean of 0 and a standard deviation of 1.
+
+```{r}
+#standarize the data  
+library(purrr)
+
+train_std <- train_t2 %>%
+  mutate(across(where(is.numeric), ~ ( . - mean(., na.rm = TRUE)) / sd(., na.rm = TRUE)))
+```
+
+```{r}
+head(train_std)
+```
+```{r}
+test_std <- test_t2 %>%
+  mutate(across(where(is.numeric), ~ ( . - mean(., na.rm = TRUE)) / sd(., na.rm = TRUE)))
+```
+
+```{r}
+head(test_std)
+```
+
+# Issues with imbalanced data: Use the SMOTE to downsample the data to keep the number of fraud vs. non-fraud more balanced 
+
+In simple words, instead of replicating and adding the observations from the minority class, it overcome imbalances by generates artificial data. It is also a type of oversampling technique.
+
+In regards to synthetic data generation, synthetic minority oversampling technique (SMOTE) is a powerful and widely used method. SMOTE algorithm draws artificial samples by choosing points that lie on the line connecting the rare observation to one of its nearest neighbors in the feature space. This technique will be used in the train data. 
+```{r}
+#smote the train set: 
+set.seed(9560)
+smote_train <- SMOTE(is_fraud ~ ., data  = train_std)
+
+table(smote_train$is_fraud)
+```
+
+Now there are 30024 cases of non-fraud and 22518 cases of fraud. The data is more or less balanced. 
+
+
+
+## Modeling: Logistic Regression, Decision Tree, and Random Forest
+
+#Model 1: Logistic Regression 
+
+```{r}
+# Train the logistic regression model
+model_log <- glm(is_fraud ~., data = smote_train, family = binomial(link = "logit"))
+```
+
+```{r}
+summary(model_log)
+```
+
+```{r}
+# Predict on the test set with the logistic regression results 
+prediction_log <- predict(model_log, test_std, type = "response")
+```
+
+
+Check the performance matrix for the logistic regression 
+
+
+```{r}
+#ROC Curve
+roc_glm = roc(test_std$is_fraud, prediction_log)
+plot(roc_glm, col="orange")
+```
+```{r}
+auc_glm = auc(test_std$is_fraud, prediction_log)
+print(auc_glm)
+```
+
+
+```{r}
+
+# Converting probabilities to binary classification (0 or 1) based on a threshold (e.g., 0.5)
+predicted_class_log <- ifelse(prediction_log > 0.5, 1, 0)
+
+# Actual labels (assuming the outcome variable in your test data is named 'Outcome')
+actual_class_log <- test_std$is_fraud
+
+# Creating a confusion matrix
+conf_matrix_log <- table(Predicted = predicted_class_log, Actual = actual_class_log)
+
+conf_matrix_log
+```
+```{r}
+confusionMatrix(as.factor(predicted_class_log), test_std$is_fraud)
+```
+
+```{r}
+# Extracting values from the confusion matrix
+TP_log <- conf_matrix_log[2, 2]  # True Positives
+FP_log <- conf_matrix_log[1, 2]  # False Positives
+FN_log <- conf_matrix_log[2, 1]  # False Negatives
+
+# Calculating Precision, Recall, and F1 Score
+precision_log1 <- TP_log / (TP_log + FP_log)
+recall_log1 <- TP_log / (TP_log + FN_log)
+f1_score_log1 <- 2 * (precision_log1 * recall_log1) / (precision_log1 + recall_log1)
+
+# Printing the results
+cat("Precision of logistic regression:", precision_log1, "\n")
+cat("Recall of logistic regression:", recall_log1, "\n")
+cat("F1 Score of logistic regression:", f1_score_log1, "\n")
+```
+
+```{r}
+# Evaluate the model
+accuracy_log <- mean(predicted_class_log == actual_class_log)
+print(accuracy_log)
+```
+
+
+This is an instant improvement from the imbalanced data with its precision score of 0.86. 
+
+
+# Model 2: Decision Trees 
+
+1. Decision Tree with minsplits 2 and maxdepth 5
+
+```{r}
+# decision tree 
+model_decision2 <- rpart(is_fraud ~ ., data = smote_train, method="class", control=rpart.control(cp=0,minsplit = 2, maxdepth = 5))
+```
+
+```{r}
+pred_decision2 = predict(model_decision2, test_std, type="class")
+```
+
+```{r}
+head(pred_decision2)
+```
+
+
+```{r}
+#plot number of splits and this time it looks much better than the first decision tree. 
+rsq.rpart(model_decision2)
+```
+```{r}
+fancyRpartPlot(model_decision2)
+```
+
+```{r}
+roc_decision2 = roc(test_std$is_fraud, as.numeric(pred_decision2))
+plot(roc_decision2, col="green")
+```
+```{r}
+auc_decision2 = auc(test_std$is_fraud, as.numeric(pred_decision2))
+print(auc_decision2)
+```
+
+The AUC value is 0.935, which is really good. 
+
+```{r}
+confusionMatrix(pred_decision2, test_std$is_fraud)
+```
+
+
+```{r}
+# Actual labels (assuming the outcome variable in your test data is named 'Outcome')
+actual_class_dec2 <- test_std$is_fraud
+
+# Creating a confusion matrix
+conf_matrix_dec2 <- table(Predicted = pred_decision2, Actual = actual_class_dec2)
+conf_matrix_dec2
+```
+```{r}
+# Extracting values from the confusion matrix
+TP_dec2 <- conf_matrix_dec2[2, 2]  # True Positives
+FP_dec2 <- conf_matrix_dec2[1, 2]  # False Positives
+FN_dec2 <- conf_matrix_dec2[2, 1]  # False Negatives
+
+# Calculating Precision, Recall, and F1 Score
+precision_dec2 <- TP_dec2 / (TP_dec2 + FP_dec2)
+recall_dec2 <- TP_dec2 / (TP_dec2 + FN_dec2)
+f1_score_dec2 <- 2 * (precision_dec2 * recall_dec2) / (precision_dec2 + recall_dec2)
+
+# Printing the results
+cat("Precision:", precision_dec2, "\n")
+cat("Recall:", recall_dec2, "\n")
+cat("F1 Score:", f1_score_dec2, "\n")
+```
+```{r}
+# Evaluate the model
+accuracy_dec2 <- mean(pred_decision2 == actual_class_dec2)
+print(accuracy_dec2)
+```
+
+Again, the decision tree 2 generated horrible results, although there was a slight improvement from the previous default decision tree. 
+
+
+2. Decision Tree with Repeated CV and grid search
+```{r}
+set.seed(3333)
+control <- trainControl(method = "repeatedcv",   # for cross-validation
+                        number = 10, 
+                        repeats = 3)
+model_decision_cv <- train(is_fraud ~ ., data = smote_train, method = "rpart", trControl = control)
+```
+
+```{r}
+#Evaluate model performance on test set
+pred_decision_cv <- predict(model_decision_cv, newdata = test_std, method = "class")
+```
+
+Attempts were made to draw out a decision tree but it won't 
+
+
+```{r}
+roc_decision_cv = roc(test_std$is_fraud, as.numeric(pred_decision_cv))
+plot(roc_decision_cv, col="blue")
+```
+```{4}
+auc_decision_cv = auc(test_std$is_fraud, pred_decision_cv)
+```
+
+The AUC value is 0.935, which is really good. 
+
+```{r}
+confusionMatrix(pred_decision_cv, test_std$is_fraud)
+```
+```{r}
+# Actual labels (assuming the outcome variable in your test data is named 'Outcome')
+actual_class_cv <- test_std$is_fraud
+
+# Creating a confusion matrix
+conf_matrix_cv <- table(Predicted = pred_decision_cv, Actual = actual_class_cv)
+conf_matrix_cv
+```
+```{r}
+# Extracting values from the confusion matrix
+TP_dec_cv <- conf_matrix_cv[2, 2]  # True Positives
+FP_dec_cv <- conf_matrix_cv[1, 2]  # False Positives
+FN_dec_cv <- conf_matrix_cv[2, 1]  # False Negatives
+
+# Calculating Precision, Recall, and F1 Score
+precision_dec_cv <- TP_dec_cv / (TP_dec_cv + FP_dec_cv)
+recall_dec_cv <- TP_dec_cv / (TP_dec_cv + FN_dec_cv)
+f1_score_dec_cv <- 2 * (precision_dec_cv * recall_dec_cv) / (precision_dec_cv + recall_dec_cv)
+
+# Printing the results
+cat("Precision:", precision_dec_cv, "\n")
+cat("Recall:", recall_dec_cv, "\n")
+cat("F1 Score:", f1_score_dec_cv, "\n")
+```
+
+
+
+# Model 3: Random Forest 
+
+```{r}
+model_rf = randomForest(is_fraud ~ ., 
+              data = smote_train,ntree=1000)
+```
+
+```{r}
+summary(model_rf)
+```
+```{r}
+pred_rf = predict(model_rf, test_std, type="class")
+```
+
+```{r}
+roc_rf = roc(test_std$is_fraud, as.numeric(pred_rf))
+plot(roc_rf, col="red")
+```
+
+```{r}
+auc_rf = auc(test_std$is_fraud, as.numeric(pred_rf))
+print(auc_rf)
+```
+
+```{r}
+# Actual labels (assuming the outcome variable in your test data is named 'Outcome')
+actual_class_rf <- test_std$is_fraud
+
+# Creating a confusion matrix
+conf_matrix_rf <- table(Predicted = pred_rf, Actual = actual_class_rf)
+conf_matrix_rf
+```
+```{r}
+#Sensitivity and specificity scores 
+confusionMatrix(pred_rf, test_std$is_fraud)
+```
+
+```{r}
+# Extracting values from the confusion matrix
+TP_rf <- conf_matrix_rf[2, 2]  # True Positives
+FP_rf <- conf_matrix_rf[1, 2]  # False Positives
+FN_rf <- conf_matrix_rf[2, 1]  # False Negatives
+```
+
+```{r}
+# Calculating Precision, Recall, and F1 Score
+precision_rf <- TP_rf / (TP_rf + FP_rf)
+recall_rf <- TP_rf / (TP_rf + FN_rf)
+f1_score_rf <- 2 * (precision_rf * recall_rf) / (precision_rf + recall_rf)
+
+# Printing the results
+cat("Precision:", precision_rf, "\n")
+cat("Recall:", recall_rf, "\n")
+cat("F1 Score:", f1_score_rf, "\n")
+```
+
+```{r}
+# Evaluate the model
+accuracy_rf <- mean(pred_rf == actual_class_rf)
+print(accuracy_rf)
+```
+
+Again, the results are much better. 
+
+# Random Forest model 2 with parameter tuning 
+```{r}
+x = select(smote_train, -is_fraud)
+y = smote_train$is_fraud
+model_rf2 <- Rborist(x, y, ntree = 1000, minNode = 20, maxLeaf = 13) 
+```
+
+```{r}
+summary(model_rf2)
+```
+
+```{r}
+testX = select(test_std, -is_fraud)
+pred_rf2 = predict(model_rf2, testX, ctgCensus = "prob") 
+```
+
+
+```{r}
+prob <- pred_rf2$prob
+#Extract the predicted label 
+predicted_rf2 <-pred_rf2$yPred
+roc_rf2 = roc(test_std$is_fraud, prob[,2])
+plot(roc_rf2, col="orange")
+```
+
+```{r}
+auc_rf2 = auc(test_std$is_fraud, prob[,2])
+print(auc_rf2)
+```
+
+```{r}
+# Actual labels (assuming the outcome variable in your test data is named 'Outcome')
+
+# Actual labels (assuming the outcome variable in your test data is named 'Outcome')
+actual_class_rf <- test_std$is_fraud
+
+# Creating a confusion matrix
+conf_matrix_rf2 <- table(Predicted = predicted_rf2, Actual = actual_class_rf)
+conf_matrix_rf2
+```
+```{r}
+#Sensitivity and specificity scores 
+confusionMatrix(predicted_rf2, test_std$is_fraud)
+```
+```{r}
+# Extracting values from the confusion matrix
+TP_rf2 <- conf_matrix_rf2[2, 2]  # True Positives
+FP_rf2 <- conf_matrix_rf2[1, 2]  # False Positives
+FN_rf2 <- conf_matrix_rf2[2, 1]  # False Negatives
+```
+
+```{r}
+# Calculating Precision, Recall, and F1 Score
+precision_rf2 <- TP_rf2 / (TP_rf2 + FP_rf2)
+recall_rf2 <- TP_rf2/ (TP_rf2 + FN_rf2)
+f1_score_rf2 <- 2 * (precision_rf2 * recall_rf2) / (precision_rf2 + recall_rf2)
+
+# Printing the results
+cat("Precision:", precision_rf2, "\n")
+cat("Recall:", recall_rf2, "\n")
+cat("F1 Score:", f1_score_rf2, "\n")
+```
+
+# Limit the number of nodes in the random forest
+
+
+```{r}
+set.seed(10)
+model_rf3 <- randomForest(is_fraud ~ ., data = smote_train,
+                         ntree = 2000, nodesize = 20)
+
+pred_rf3 <- predict(model_rf3, test_std)
+
+```
+
+```{r}
+#examine the confusion matrix 
+confusionMatrix(pred_rf3, test_std$is_fraud)
+
+```
+```{r}
+# Creating a confusion matrix
+conf_matrix_rf3 <- table(Predicted = pred_rf3, Actual = actual_class_rf)
+conf_matrix_rf3
+```
+```{r}
+# Extracting values from the confusion matrix
+TP_rf3 <- conf_matrix_rf3[2, 2]  # True Positives
+FP_rf3 <- conf_matrix_rf3[1, 2]  # False Positives
+FN_rf3 <- conf_matrix_rf3[2, 1]  # False Negatives
+```
+
+```{r}
+# Calculating Precision, Recall, and F1 Score
+precision_rf3 <- TP_rf3 / (TP_rf3 + FP_rf3)
+recall_rf3 <- TP_rf3/ (TP_rf3 + FN_rf3)
+f1_score_rf3 <- 2 * (precision_rf3 * recall_rf3) / (precision_rf3 + recall_rf3)
+
+# Printing the results
+cat("Precision:", precision_rf3, "\n")
+cat("Recall:", recall_rf3, "\n")
+cat("F1 Score:", f1_score_rf3, "\n")
+```
