@@ -14,5 +14,3 @@ This portfolio showcases my ability to integrate the diverse knowledge and skill
 Demonstrating mastery in data science requires more than understanding its principles; it demands the creative application of these principles to solve novel problems. In this portfolio, I demonstrate my ability to apply these principles in the following projects: 
 
 <img width="629" alt="Screenshot 2024-03-11 at 8 41 59 PM" src="https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/assets/94016314/a9e3a45e-4ff3-4b02-8113-624a0660ead4">
-
-Project 1: Wine review data analysis and text classification https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/tree/e7cd1a4d3f8d7adcaaf8aae7f8672ef76c641448/Project%201%3A%20Wine%20review%20data%20analysis%20and%20text%20classification
