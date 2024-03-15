@@ -1,6 +1,6 @@
 # Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-
 
-Introduction
+## Introduction
 The Master’s of Science of Applied Data Science at Syracuse University is designed to focus on the practical application of data science across various facets of enterprise operations, encompassing data acquisition and management, in-depth analysis, and the strategic communication necessary for informed decision-making.
 My experience gained throughout this program equipped me with a solid foundation in both the theoretical underpinnings of data science and its real-world applications. I learnt to navigate the complexities of data mining, manage datasets, design and maintain databases, and data analysis to unveil valuable insights, and communicate these findings effectively to drive decision-making processes. 
 This portfolio showcases my ability to integrate the diverse knowledge and skills acquired, applying them to develop innovative solutions to operational challenges across different industries (airlines, medical, wine etc.). Specifically,  proficiency in each fundamental aspect of data science showcased in this portfolio are as followed: 
