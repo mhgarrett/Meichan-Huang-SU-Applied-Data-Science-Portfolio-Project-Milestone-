@@ -16,7 +16,7 @@ Demonstrating mastery in data science requires more than understanding its princ
 
 ## Table of Content 
 
-<a href="https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/tree/5bc88959660d050866e4397fe289a019c9df0118/Project%201%3A%20Wine%20review%20data%20analysis%20and%20text%20classification">Project 1: Wine review data analysis and text classification</a>
+<a href="https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/tree/5bc88959660d050866e4397fe289a019c9df0118/Project%201%3A%20Wine%20review%20data%20analysis%20and%20text%20classification">Project 1: Wine Review Data Analysis and Text Classification</a>
 
 
 <a href="https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/tree/5447cb5357318b88d8a3e739b240ae8b91fa0da8/Project%202%3A%20Airline%20Tweets%20Sentiment%20Analysis"> Project 2: Airline Tweets Sentiment Analysis and Topic Modeling </a>
