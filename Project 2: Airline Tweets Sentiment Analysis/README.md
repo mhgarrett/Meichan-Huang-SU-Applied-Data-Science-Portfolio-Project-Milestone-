@@ -1,4 +1,4 @@
-# Project 2: Airline Tweets Sentiment Analysis
+# Project 2: Airline Tweets Sentiment Analysis and Topic Modeling
 ## Project Description 
 In the IST 756: Text Mining course instructed by Dr. Norma in Spring 2023,  I enhanced my understanding of text mining fundamentals, including document representation, information extraction, text classification and clustering, and topic modeling. Teamed with Ryan Tervo, we analyzed a corpus of 14,640 tweets from Kaggle.com to gauge public sentiment toward six major airlines in the U.S. This project encompassed two types of advanced text-mining techniques that I have acquired through the course, namely sentiment classification and topic modeling. 
 
