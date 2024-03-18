@@ -17,6 +17,13 @@ Demonstrating mastery in data science requires more than understanding its princ
 ## Table of Content 
 
 <a href="https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/tree/5bc88959660d050866e4397fe289a019c9df0118/Project%201%3A%20Wine%20review%20data%20analysis%20and%20text%20classification">Project 1: Wine Review Data Analysis and Text Classification</a>
-
+This project leverages the Wine Euthusi
 
 <a href="https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/tree/5447cb5357318b88d8a3e739b240ae8b91fa0da8/Project%202%3A%20Airline%20Tweets%20Sentiment%20Analysis"> Project 2: Airline Tweets Sentiment Analysis and Topic Modeling </a>
+
+<a href="https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/tree/e50172f17a5265d82f4315d1ddf8b62ab02af608/Project%203%3A%20Pneumonia%20Chest%20X-ray%20Image%20Classification"> Project 3: Peunmonia Chest X-ray Image Classification </a>
+
+<a href="https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/tree/e50172f17a5265d82f4315d1ddf8b62ab02af608/Project%204%3A%20Fudgeworld%20Data%20Warehousing"> Project 4: Fudgeworld Data Warehouse Management </a>
+
+<a href="https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/tree/e50172f17a5265d82f4315d1ddf8b62ab02af608/Project%205%3A%20Credit%20Card%20Fraud%20Detection"> Project 5:  Credit Card Fraud Detection </a>
+
