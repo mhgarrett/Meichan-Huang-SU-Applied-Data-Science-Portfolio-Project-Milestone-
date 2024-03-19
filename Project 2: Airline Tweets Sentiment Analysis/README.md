@@ -6,6 +6,9 @@ Through the use of different classification algorithms (naïve bayes and SVM), w
 
 ![image](https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/assets/94016314/f25f5afb-3e75-4373-a2ed-9d6c1bda3b36)
 
+Then,  six models were evaluated a second time in which the category labels were modified to be either ‘negative’ and ‘notNegative’.  The ‘notNegative’ category was the combination of ‘positive’ and ‘neutral’ tweets.  The following is a compilation of the results. Overall, the best accuracy was achieved using the SVM model with the TF-IDF vectorizer which improved the accuracy of the trivial model by 13.1%.  The trivial (no information) model would predict every tweet ‘negative’ and achieve an accuracy of only 62.9%.  
+
+![image](https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/assets/94016314/13a5a675-1126-4fbb-9e8a-a2191183307e)
 
 Additionally, we investigated the topic patterns of positive and negative tweets to gain insight into customers' perceptions of airlines. We wanted to gain a deeper understanding of the factors that drive sentiment in the airline industry for insights into customer preferences and opinions. Therefore, LDA was employed as our topic modeling technique to decipher latent themes in the tweets, which is an approach that not only aligned with our project's goals but also enhanced our understanding of the data's underlying structure. To improve the clarity of our results, we integrated human interpretation with the algorithmic output, ensuring that the themes we presented were both accurate and resonant with human understanding. instead of relying on the matrices of log-likelihood and perplexity scores. For instance, the following is one of these selected negative tweets topic modeling outputs using the LADViz package based on the judgment of both modeling performance matrices and human judgment. 
 
