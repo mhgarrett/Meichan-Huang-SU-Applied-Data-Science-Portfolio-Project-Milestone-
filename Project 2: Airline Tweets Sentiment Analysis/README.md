@@ -3,35 +3,7 @@
 In the IST 756: Text Mining course instructed by Dr. Norma Grubb in Spring 2023,  I enhanced my understanding of text mining fundamentals, including document representation, information extraction, text classification and clustering, and topic modeling. Teamed with Ryan Tervo, we analyzed a corpus of 14,640 tweets from Kaggle.com to gauge public sentiment toward six major airlines in the U.S. This project encompassed two types of advanced text-mining techniques that I have acquired through the course, namely sentiment classification and topic modeling. 
 
 Through the use of different classification algorithms (naïve bayes and SVM), we tested different feature engineering and parameter tuning techniques to enhance the accuracy in classify sentiment in tweets automatically and practiced. In this analysis, different feature engineering techniques were deployed based on the structure of the tweet corpus, specifically, how to remove special characters, symbols, and stopwords, vectorize the tokenized data (i.e. binary vectorizer, count vectorizer, and TF-IDF vectorizer) and tune parameters to control for upper-case and number of n_grams, and maximum number of features to extract based on the TF-DIF scores etc. 
-Table 1.  Vectorizer 1 Settings
 
-Parameters	Setting
-encoding	‘latin-1’
-binary	False
-min_df	3
-max_df	1500
-ngram_range	(1, 5)
-
-
-Table 2.  Vectorizer 2 Settings
-
-Parameters	Setting
-encoding	‘latin-1’
-binary	False
-min_df	2
-max_df	1500
-ngram_range	(1, 3)
-
-Table 3  Vectorizer 3 Settings
-
-Parameters	Setting
-encoding	‘latin-1’
-binary	False
-min_df	5
-smooth_idf	True
-sublinear_tf	True
-ngram_range	(1, 4)
-max_features	2000
 ![image](https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/assets/94016314/f25f5afb-3e75-4373-a2ed-9d6c1bda3b36)
 
 
