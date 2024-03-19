@@ -7,27 +7,7 @@ The first project brought together two distinct sub-projects from IST 652: Scrip
 
 The initial phase of the project was completed through IST652: Scripting for Data Analysis. The sub-project was marked by a strategic compilation of multiple external data sources to augment the primary dataset in Kaggle, which was scrapped from the Wine Enthusiast magazine during 2017-2020, containing 210,000 entries of wine reviews. Using Pandas package, the data was merged with the longitude and latitude dataset of the world geographic locations in Kaggle to visualize data distribution based on the locations. 
 
-## Business questions: 
-
-Question 1: Which countries and provinces had the MOST and LEAST reviews (demographic distributions of wine reviews)?
-
-Question 2: What is the MEAN, MIN and MAX points received for wines from the most and least reviewed countries and provinces? 
-
-Question 3: What was the MEAN, MIN and MAX price of wine by country?
-
-Question 4: How many wines were reviewed by category? What are the top 10 wine varieties reviewed?
-
-Question 5: What are the MEAN, MIN and MAX scores, particular for top 10 most reviewed varieties?
-
-Question 6: What was the MEAN, MIN and MAX prices of wine by top 10 reviewed varieties?
-
-Question 7: For each country, what type of wine is most reviewed?
-
-Question 8: What is the correlation between the price and score of a bottle of wine?
-
-Question 9: What types of descriptors were frequently associated categories of wine in the reviews? e.g. what kind of fruit flavor were typically used in the wine reviews? 
-
-This project enhanced my skills in thorough data exploration and analysis, incorporating traditional correlational analysis to examine the interplay between various attributes. The methodologies applied during this stage leveraged Python's robust libraries, specifically Pandas and NumPy, to facilitate data manipulation and analysis. The focus of the first part of the project was to uncover the relationships among data attributes and to understand the dataset's overall structure. Insights gleaned from this phase were aimed at data visualization and exploratory analysis, offering both graphical and statistical insights into the inherent patterns and trends within the wine review data. Key questions included identifying the top 10 most reviewed wine types and the most frequently reviewed wine regions. The following demonstrated one of such exploratory analysis done using the dataset to gain insights into the wine around the world, including the origins of the wine that were reviewed by the magazine (Figure X). 
+This project enhanced my skills in thorough data exploration and analysis, incorporating traditional correlational analysis to examine the interplay between various attributes. The methodologies applied during this stage leveraged Python's robust libraries, specifically Pandas and NumPy, to facilitate data manipulation and analysis. The focus of the first part of the project was to uncover the relationships among data attributes and to understand the dataset's overall structure. Insights gleaned from this phase were aimed at data visualization and exploratory analysis, offering both graphical and statistical insights into the inherent patterns and trends within the wine review data. Key questions included identifying the top 10 most reviewed wine types and the most frequently reviewed wine regions. The following demonstrated one of such exploratory analysis done using the dataset to gain insights into the wine around the world, including the origins of the wine that were reviewed by the magazine (Figure 1). 
 
 <img width="424" alt="image" src="https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/assets/94016314/fbf65bf6-a51b-442e-88e0-4a5a83f18481">
 
