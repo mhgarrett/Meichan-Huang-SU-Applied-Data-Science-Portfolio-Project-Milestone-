@@ -2,13 +2,45 @@
 ## Project Description 
 In the IST 756: Text Mining course instructed by Dr. Norma Grubb in Spring 2023,  I enhanced my understanding of text mining fundamentals, including document representation, information extraction, text classification and clustering, and topic modeling. Teamed with Ryan Tervo, we analyzed a corpus of 14,640 tweets from Kaggle.com to gauge public sentiment toward six major airlines in the U.S. This project encompassed two types of advanced text-mining techniques that I have acquired through the course, namely sentiment classification and topic modeling. 
 
-Through the use of different classification algorithms (naïve bayes and SVM), we tested different feature engineering and parameter tuning techniques to enhance the accuracy in classify sentiment in tweets automatically and practiced. In this analysis, different feature engineering techniques were deployed based on the structure of the tweet corpus, specifically, how to remove special characters, symbols, and stopwords, vectorize the tokenized data (i.e. binary vectorizer, count vectorizer, and TF-IDF vectorizer) and tune parameters to control for upper-case and number of n_grams, and maximum number of features to extract based on the TF-DIF scores etc.  
+Through the use of different classification algorithms (naïve bayes and SVM), we tested different feature engineering and parameter tuning techniques to enhance the accuracy in classify sentiment in tweets automatically and practiced. In this analysis, different feature engineering techniques were deployed based on the structure of the tweet corpus, specifically, how to remove special characters, symbols, and stopwords, vectorize the tokenized data (i.e. binary vectorizer, count vectorizer, and TF-IDF vectorizer) and tune parameters to control for upper-case and number of n_grams, and maximum number of features to extract based on the TF-DIF scores etc. 
+Table 1.  Vectorizer 1 Settings
+
+Parameters	Setting
+encoding	‘latin-1’
+binary	False
+min_df	3
+max_df	1500
+ngram_range	(1, 5)
+
+
+Table 2.  Vectorizer 2 Settings
+
+Parameters	Setting
+encoding	‘latin-1’
+binary	False
+min_df	2
+max_df	1500
+ngram_range	(1, 3)
+
+Table 3  Vectorizer 3 Settings
+
+Parameters	Setting
+encoding	‘latin-1’
+binary	False
+min_df	5
+smooth_idf	True
+sublinear_tf	True
+ngram_range	(1, 4)
+max_features	2000
+![image](https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/assets/94016314/f25f5afb-3e75-4373-a2ed-9d6c1bda3b36)
+
+
 Additionally, we investigated the topic patterns of positive and negative tweets to gain insight into customers' perceptions of airlines. We wanted to gain a deeper understanding of the factors that drive sentiment in the airline industry for insights into customer preferences and opinions. Therefore, LDA was employed as our topic modeling technique to decipher latent themes in the tweets, which is an approach that not only aligned with our project's goals but also enhanced our understanding of the data's underlying structure. To improve the clarity of our results, we integrated human interpretation with the algorithmic output, ensuring that the themes we presented were both accurate and resonant with human understanding. instead of relying on the matrices of log-likelihood and perplexity scores. For instance, the following is one of these selected negative tweets topic modeling outputs using the LADViz package based on the judgment of both modeling performance matrices and human judgment. 
 
 <img width="1432" alt="Screenshot 2024-03-18 at 7 38 10 PM" src="https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/assets/94016314/3a02cd64-cffc-4fdf-bf60-63fffc885d3f">
 
-
 Advanced Python packages were employed to assist our analysis, for instance, one of the packages that genism library for text-preprocessing and topic-modeling, adding on to my skill set for text analysis using NLTK package for natural language processing. 
+
 ## Reflection and Learning Goals 
 I see this project as a demonstration of my deepen understanding of data scientist techniques as I progressed along in the program. A pivotal skill I acquired was the adept use of different feature engineering strategies tailored to the dataset's structure. This involved mastering the art of vectorizing tokenized data—choosing between binary, count, and TF-IDF vectorizers—and fine-tuning parameters to address nuances such as stopwords, case sensitivity, and minimum document frequency. This experience was instrumental in enhancing my practical knowledge of machine learning algorithms and their application in text analysis tasks.  
 
