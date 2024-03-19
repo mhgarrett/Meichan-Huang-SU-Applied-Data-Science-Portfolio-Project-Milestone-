@@ -1,5 +1,11 @@
 # Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-
 
+## About me
+Meichan Huang, Ph.D. <br>
+PhD in Applied Linguistics/MSc in Applied Data Science <br>
+Emails: mhuang01@syr.edu; meichan.huangg@gmail.com <br>
+LinkedIn: https://www.linkedin.com/in/meichanhuang/  <br>
+
 ## Introduction
 <p> The Master’s of Science of Applied Data Science at Syracuse University is designed to focus on the practical application of data science across various facets of enterprise operations, encompassing data acquisition and management, in-depth analysis, and the strategic communication necessary for informed decision-making.
 My experience gained throughout this program equipped me with a solid foundation in both the theoretical underpinnings of data science and its real-world applications. I learnt to navigate the complexities of data mining, manage datasets, design and maintain databases, and data analysis to unveil valuable insights, and communicate these findings effectively to drive decision-making processes. 
@@ -15,6 +21,13 @@ Demonstrating mastery in data science requires more than understanding its princ
 <img width="629" alt="Screenshot 2024-03-11 at 8 41 59 PM" src="https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/assets/94016314/a9e3a45e-4ff3-4b02-8113-624a0660ead4">
 
 ## Table of Content 
+<a href="https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/blob/f6639dffc02065a7d9b0be98b5512845470cbbb7/MeichanHuang_data%20scientist_analyst%20resume.pdf"> Meichan Huang's Professional Resume - Data Scientist & Data Analyst </a> 
+
+<a href="https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/blob/f6639dffc02065a7d9b0be98b5512845470cbbb7/MeichanHuang_data%20scientist_analyst%20resume.pdf"> Meichan Huang's Final Portfolio Written Report </a> 
+
+<a href="https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/blob/f6639dffc02065a7d9b0be98b5512845470cbbb7/MeichanHuang_data%20scientist_analyst%20resume.pdf"> Meichan Huang's Final Portfolio Slide Deck </a> 
+
+<a href="https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/blob/f6639dffc02065a7d9b0be98b5512845470cbbb7/MeichanHuang_data%20scientist_analyst%20resume.pdf"> Meichan Huang's Final Portfolio Presentation </a> 
 
 <a href="https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/tree/5bc88959660d050866e4397fe289a019c9df0118/Project%201%3A%20Wine%20review%20data%20analysis%20and%20text%20classification">Project 1: IST 652 & IST 644 - Wine Review Data Analysis and Text Classification</a>
 
