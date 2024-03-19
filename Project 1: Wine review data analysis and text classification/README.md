@@ -1,21 +1,7 @@
 # Wine-review-data-visualization-and-analysis
-This is an exploritory project working with three data sources to complete the tasks related to wine reviews.
-In this report, I will discuss the data acquiring and data wrangling process. I will discuss the nature of the data. Lastly, I will answer eleven research questions based on the dataset and provide insights into the questions. The goal of this project was to understand wine reviews by geolocations, varieties, points, price, and also text analysis of what descriptors are frequently associated with reviews of certain wines.  
+This is an exploratory project working with three data sources to complete data analysis related to wine reviews. 
 
 ## Project Description 
-
-Data source 1: 
-For the final project, I originally decided to analyze the wine reviews from Wine Enthusiast https://www.winemag.com/ratings/. However, since the web scrapping was not successful even with codes I found, I resorted to the dataset that was scrapped in 2017 (available on Kaggle: https://www.kaggle.com/datasets/zynicide/wine-reviews). There were 14 columns in the data and approximately 130K entries of data. The columns included: 
-![image](https://user-images.githubusercontent.com/94016314/219793679-009b053b-2013-46b3-8347-e5c3e0ac7386.png)
-
-Data source 2: 
-Since the data from the original scrapping was from 2017, which is a little dated, I searched Kaggle and found an updated dataset from 2020 (available at: https://www.kaggle.com/datasets/manyregression/updated-wine-enthusiast-review)  The author excluded duplicated values from the original 2017 dataset and added two attributes: “taster photo” and “vintage”. However, since I am not interested in these attributes. I dropped them when I loaded the data into the Jupyter notebook. This data provided additional 80k reviews of wine from different countries.
-
-Data source 3: 
-The third data source was the longitudinal and latitudinal dataset for all the countries under the name of “world_country_and_usa_states_latitude_and_longitude_values.csv”. The data is available at Kaggle from: https://www.kaggle.com/datasets/paultimothymooney/latitude-and-longitude-for-every-country-and-state. I did some cleaning and only included the world country latitude and longitude for my analysis. This dataset included four attributes: country code (abbreviation), longitude, latitude, and country (name).
-
-![image](https://user-images.githubusercontent.com/94016314/219793861-f14bf54e-a634-4a06-91a1-1dc25adf74f7.png)
-
 
 The first project brought together two distinct sub-projects from IST 652: Scripting for Data Analysis and IST 644: Natural Language Processing courses I completed in the Fall of 2022. It was an exploration of the comprehensive data science lifecycle to foster actionable insights, from the wine consumers’ perspectives. The aim was to predict wine scores by analyzing a blend of traditional statistical data and textual information, including origin, price, reviews from wine enthusiasts, and Twitter data. The project was structured in two segments, each with a different emphasis, showcasing the diverse data analytics skills I developed through IST 652 and IST 644. 
 
@@ -45,7 +31,7 @@ This project enhanced my skills in thorough data exploration and analysis, incor
 
 <img width="424" alt="image" src="https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/assets/94016314/fbf65bf6-a51b-442e-88e0-4a5a83f18481">
 
-Figure X. Top most reviewed wine origins by countries 
+Figure 1. Top most reviewed wine origins by countries 
 
 Additionally, the project presented me with an opportunity to explore the relationship between wine prices and their ratings, yielding insights with significant business implications. Specifically, it revealed that wines with high ratings are not necessarily associated with higher prices. To uncover this, a regression analysis was conducted using the sklearn library, examining the correlation between wine prices and the points awarded. A noteworthy hurdle of this analysis was the creation of visualizations to convey meaningful insights effectively. This was particularly important given the data's characteristics: a narrow points range (80 - 100) contrasted with a vast, densely populated price range, mostly concentrated within the lower consumer price quartile. Consequently, the correlation model was refined to consider only wines priced at $100 or less, enabling a clearer comprehension of the relationship between price and quality.
 
