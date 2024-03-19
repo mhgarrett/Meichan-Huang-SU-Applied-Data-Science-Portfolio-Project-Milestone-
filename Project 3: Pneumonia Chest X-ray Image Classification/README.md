@@ -1,8 +1,24 @@
 ## Project Description
 The final project of IST 716: Big Data Analysis was an attempt for me to embrace other areas of ML application – image classification with chest x-ray images from a Kaggle competition. Working with Matthew Pergolski and Shawn Anderson as a team, we explored the efficacy of deep Convolutional Neural Networks (CNNs) in distinguishing between normal and abnormal chest X-rays. As an exploration in the deep learning, we leveraged 5,863 chest x-rays from children aged one to five years old with each image categorized by its respective diagnosis, normal or pneumonia.  
+
 The highlights of this project was applying two distinct deep learning models, ResNet and VGG-16 for the image classification, each with various parameter tunings, which required using PyTorch to deploy these models. This was challenging as my first attempt for deep learning models. However, through research, we were able to complement PyTorch with Fastai, a high-level library designed, which simplified the building and training of machine learning models. 
 To monitor our progress, we kept a tab on several metrics: the number of epochs (full cycles through the training data), training and validation losses (indicating how well the model was fitting the data), error rates (showing the frequency of incorrect predictions), and the time taken for each epoch. 
+
+![image](https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/assets/94016314/b86c7287-5b16-408c-8320-2c300d320f10) 
+
+Accuracy rate for Resnet models
+
+
+![image](https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/assets/94016314/bf5ea01c-11e5-4981-96ec-b91f30e62374)
+
+VGG16 Model outputs
+
+![image](https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/assets/94016314/b25c42e5-3f27-4750-b1e9-bd626fd82257)
+
 Another highlight in the project was that, through researching in literature, I was able to utilize Grad-CAM (Gradient-weighted Class Activation Mapping) to overlay the chest X-rays when running VGG-16 models, which generates a heatmap underlining the significant regions or features in an image that the network primarily uses for prediction, allowing for easier visualization. 
+
+![image](https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/assets/94016314/697818a6-a390-4227-95bd-2c79f4de60d7)
+
 ## Reflection and Learning Goals 
 This project was a break-through for me and also an eye-opener for me. It extended my data science toolkits in including practical machine learning applications, specifically in image classification. By applying advanced models like ResNet and VGG-16, each with unique parameter adjustments, I familiarized myself with the application of Convolutional Neural Network, utilizing python packages PyTorch and Fastai libraries, which embodied the program's objective of leveraging cutting-edge technologies for data analysis. 
 It is also a demonstration of my commitment to fostering advanced analytical skills and providing a foundation for evaluating and applying these skills to real-world challenges, as the program has taught me. 
