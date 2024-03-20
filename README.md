@@ -27,7 +27,7 @@ Demonstrating mastery in data science requires more than understanding its princ
 
 <a href="https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/blob/705d807b5d49015a8473ab8feb7803e88cec2e13/Meichan%20Huang_Final%20Project%20Portfolio_Slide%20Deck%20.pdf"> Meichan Huang's Final Portfolio Slide Deck </a> 
 
-<a href="https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/blob/f6639dffc02065a7d9b0be98b5512845470cbbb7/MeichanHuang_data%20scientist_analyst%20resume.pdf"> Meichan Huang's Final Portfolio Presentation </a> 
+<a href="https://youtu.be/0WEG7HchjMI"> Meichan Huang's Final Portfolio Presentation Recording </a> 
 
 <a href="https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/tree/022575f84eda34dbcd2b551e31d79127bffb67a5/Project%201%3A%20Wine%20review%20data%20analysis%20and%20text%20classification">Project 1: IST 652 & IST 644 - Wine Review Data Analysis and Text Classification</a>
 
