@@ -32,7 +32,7 @@ Demonstrating mastery in data science requires more than understanding its princ
 <a href="https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/tree/022575f84eda34dbcd2b551e31d79127bffb67a5/Project%201%3A%20Wine%20review%20data%20analysis%20and%20text%20classification">Project 1: IST 652 & IST 644 - Wine Review Data Analysis and Text Classification</a>
 
 
-<a href="https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/tree/99b6ad63bb8fa5e79487840e541c7427d6cead2f/Project%202%3A%20Airline%20Tweets%20Sentiment%20Analysis"> Project 2: IST 736 - Airline Tweets Sentiment Analysis and Topic Modeling </a>
+<a href="https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/tree/82030e8ae00da2c0d8e07a80636debbb341c5c8d/Project%202%3A%20Airline%20Tweets%20Sentiment%20Analysis"> Project 2: IST 736 - Airline Tweets Sentiment Analysis and Topic Modeling </a>
 
 <a href="https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/tree/99b6ad63bb8fa5e79487840e541c7427d6cead2f/Project%203%3A%20Pneumonia%20Chest%20X-ray%20Image%20Classification"> Project 3: IST 718 - Peunmonia Chest X-ray Image Classification </a>
 
