@@ -25,7 +25,7 @@ Demonstrating mastery in data science requires more than understanding its princ
 
 <a href="https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/blob/1e59bfd7bcc671f9dd9487c409015e2f78ddca8c/Meichan%20Huang_Final%20Portfolio%20Written%20Report%20Final.pdf"> Meichan Huang's Final Portfolio Written Report </a> 
 
-<a href="https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/blob/f6639dffc02065a7d9b0be98b5512845470cbbb7/MeichanHuang_data%20scientist_analyst%20resume.pdf"> Meichan Huang's Final Portfolio Slide Deck </a> 
+<a href="https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/blob/705d807b5d49015a8473ab8feb7803e88cec2e13/Meichan%20Huang_Final%20Project%20Portfolio_Slide%20Deck%20.pdf"> Meichan Huang's Final Portfolio Slide Deck </a> 
 
 <a href="https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/blob/f6639dffc02065a7d9b0be98b5512845470cbbb7/MeichanHuang_data%20scientist_analyst%20resume.pdf"> Meichan Huang's Final Portfolio Presentation </a> 
 
