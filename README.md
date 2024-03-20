@@ -38,5 +38,5 @@ Demonstrating mastery in data science requires more than understanding its princ
 
 <a href="https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/tree/99b6ad63bb8fa5e79487840e541c7427d6cead2f/Project%204%3A%20Fudgeworld%20Data%20Warehousing"> Project 4: IST 722 - Fudgeworld Data Warehouse Management </a>
 
-<a href="https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/tree/99b6ad63bb8fa5e79487840e541c7427d6cead2f/Project%205%3A%20Credit%20Card%20Fraud%20Detection"> Project 5: IST 707 - Credit Card Fraud Detection </a>
+<a href="https://github.com/mhgarrett/Meichan-Huang-SU-Applied-Data-Science-Portfolio-Project-Milestone-/tree/364ff6fca1a9838f1c72cb0a222576abecfc25f9/Project%205%3A%20Credit%20Card%20Fraud%20Detection"> Project 5: IST 707 - Credit Card Fraud Detection </a>
 
